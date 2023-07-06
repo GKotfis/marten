@@ -72,6 +72,9 @@ public class Target
                 break;
         }
 
+        var value = _random.Next(0, 100);
+        if (value > 10) target.NullableNumber = value;
+
         target.Long = 100 * _random.Next();
         target.Double = _random.NextDouble();
         target.Long = _random.Next() * 10000;

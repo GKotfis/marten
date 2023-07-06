@@ -154,7 +154,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Internal\Generated\EventStore" />
+      <Folder Include="Internal\" />
     </ItemGroup>
 
     <PropertyGroup>
