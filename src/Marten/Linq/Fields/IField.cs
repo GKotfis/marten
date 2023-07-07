@@ -40,6 +40,8 @@ public interface IField: IComparableFragment, ISqlFragment
     object GetValueForCompiledQueryParameter(Expression valueExpression);
 
     string LocatorFor(string rootTableAlias);
+
+    [Obsolete("Try to eliminate this")]
     bool ShouldUseContainmentOperator();
 
     string SelectorForDuplication(string pgType);

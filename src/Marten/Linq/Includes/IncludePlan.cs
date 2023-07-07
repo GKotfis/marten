@@ -22,9 +22,6 @@ internal class IncludePlan<T>: IIncludePlan
 
     public IField ConnectingField { get; }
 
-    public string LeftJoinExpression =>
-        $"LEFT JOIN LATERAL {ConnectingField.LocatorForIncludedDocumentId} WITH ORDINALITY as {ExpressionName}({IdAlias}) ON TRUE";
-
     public Type DocumentType => typeof(T);
 
     public int Index

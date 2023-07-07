@@ -11,6 +11,7 @@ using Marten.Exceptions;
 using Marten.Internal.Sessions;
 using Marten.Internal.Storage;
 using Marten.Linq.Includes;
+using Marten.Linq.New;
 using Marten.Linq.Parsing;
 using Marten.Linq.QueryHandlers;
 using Marten.Services;
@@ -71,6 +72,15 @@ internal class MartenLinqQueryable<T>: QueryableBase<T>, IMartenQueryable<T>, IM
 
     public Task<IReadOnlyList<TResult>> ToListAsync<TResult>(CancellationToken token)
     {
+        var builder = new NewLinqQueryParser(Session, Expression);
+        var handler = builder.BuildHandler<IReadOnlyList<TResult>>();
+
+        //await ensureStorageExistsAsync(builder, token).ConfigureAwait(false);
+
+
+        return MartenProvider.ExecuteHandlerAsync(handler, token);
+
+
         return MartenProvider.ExecuteAsync<IReadOnlyList<TResult>>(Expression, token);
     }
 
