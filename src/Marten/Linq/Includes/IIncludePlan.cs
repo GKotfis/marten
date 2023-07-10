@@ -4,7 +4,7 @@ using Marten.Linq.SqlGeneration;
 
 namespace Marten.Linq.Includes;
 
-internal interface IIncludePlan
+public interface IIncludePlan
 {
     string IdAlias { get; }
     string TempTableSelector { get; }

@@ -11,7 +11,7 @@ using Weasel.Postgresql;
 
 namespace Marten.Linq.SqlGeneration;
 
-internal abstract class SelectorStatement: Statement
+public abstract class SelectorStatement: Statement
 {
     protected SelectorStatement(ISelectClause selectClause, IFieldMapping fields): base(fields)
     {

@@ -72,8 +72,8 @@ internal class MartenLinqQueryable<T>: QueryableBase<T>, IMartenQueryable<T>, IM
 
     public Task<IReadOnlyList<TResult>> ToListAsync<TResult>(CancellationToken token)
     {
-        var builder = new NewLinqQueryParser(Session, Expression);
-        var handler = builder.BuildHandler<IReadOnlyList<TResult>>();
+        var builder = new LinqQueryParser(Session, Expression);
+        var handler = builder.BuildListHandler<TResult>();
 
         //await ensureStorageExistsAsync(builder, token).ConfigureAwait(false);
 

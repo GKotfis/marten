@@ -12,13 +12,17 @@ using Shouldly;
 using Weasel.Core;
 using Weasel.Postgresql;
 using Weasel.Postgresql.SqlGeneration;
+using Xunit.Abstractions;
 
 namespace LinqTests;
 
 public class playing : IntegrationContext
 {
-    public playing(DefaultStoreFixture fixture) : base(fixture)
+    private readonly ITestOutputHelper _output;
+
+    public playing(DefaultStoreFixture fixture, ITestOutputHelper output) : base(fixture)
     {
+        _output = output;
     }
 
     protected override Task fixtureSetup()
@@ -50,11 +54,12 @@ public class playing : IntegrationContext
     [Fact]
     public async Task try_linq()
     {
+        theSession.Logger = new TestOutputMartenLogger(_output);
+
         var targets = await theSession.Query<Target>()
             .OrderBy(x => x.Double)
             .Where(x => x.Number.Equals(5))
-            .SelectMany(x => x.StringList)
-            .Take(5)
+            //.Take(5)
             .ToListAsync();
 
 

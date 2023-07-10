@@ -12,7 +12,7 @@ using StringExtensions = JasperFx.Core.StringExtensions;
 namespace Marten.Linq.Includes;
 
 // This is also used as an ISelectClause inside the statement structure
-internal class IncludeIdentitySelectorStatement: Statement, ISelectClause
+public class IncludeIdentitySelectorStatement: Statement, ISelectClause
 {
     private readonly SelectorStatement _clonedEnd;
     private readonly IList<IIncludePlan> _includes;
