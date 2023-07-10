@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using JasperFx.Core;
 using Marten.Internal;
 using Marten.Linq.SqlGeneration;
+using Remotion.Linq.Clauses;
 
 namespace Marten.Linq.New;
 
@@ -31,6 +34,10 @@ public class CollectionUsage
         var storage = session.StorageFor(ElementType);
 
         var statement = new DocumentStatement(storage);
+
+        // TODO -- eliminate Relinq
+        statement.WhereClauses.AddRange(Wheres.Select(e => new WhereClause(e)));
+        statement.Orderings.AddRange(Ordering.Select(o => o.Convert()));
 
         return statement;
     }
