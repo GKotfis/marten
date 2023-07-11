@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using JasperFx.Core.Reflection;
+using Marten.Linq.New.Operators;
 using Marten.Util;
 using Remotion.Linq.Clauses;
 

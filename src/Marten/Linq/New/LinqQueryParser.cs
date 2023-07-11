@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using JasperFx.Core.Reflection;
 using Marten.Exceptions;
 using Marten.Internal;
+using Marten.Linq.New.Operators;
 using Marten.Linq.QueryHandlers;
 using Marten.Linq.SqlGeneration;
 
@@ -31,9 +30,6 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
         Visit(expression);
     }
 
-    public SelectorStatement CurrentStatement { get; set; }
-
-    public Statement TopStatement { get; private set; }
 
     public CollectionUsage CollectionUsageFor(MethodCallExpression expression)
     {

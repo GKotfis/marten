@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Marten.Linq.New.Operators;
 using Marten.Linq.SqlGeneration;
 
 namespace Marten.Linq.New;
@@ -28,9 +29,6 @@ public class CollectionUsage
     {
         _offset ??= offset; // don't overwrite
     }
-
-
-
 
     public NewStatement BuildStatement(DocumentCollection collection)
     {

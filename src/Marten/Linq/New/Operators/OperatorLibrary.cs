@@ -1,6 +1,6 @@
 using JasperFx.Core;
 
-namespace Marten.Linq.New;
+namespace Marten.Linq.New.Operators;
 
 internal class OperatorLibrary
 {

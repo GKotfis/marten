@@ -1,11 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 
-namespace Marten.Linq.New;
+namespace Marten.Linq.New.Operators;
 
 public class WhereOperator: LinqOperator
 {

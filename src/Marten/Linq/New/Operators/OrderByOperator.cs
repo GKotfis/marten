@@ -1,11 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Marten.Linq.Parsing;
 using Remotion.Linq.Clauses;
 
-namespace Marten.Linq.New;
+namespace Marten.Linq.New.Operators;
 
 public class OrderByOperator: LinqOperator
 {

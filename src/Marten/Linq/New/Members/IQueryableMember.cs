@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Marten.Linq.New.Operators;
 
 namespace Marten.Linq.New.Members;
 
