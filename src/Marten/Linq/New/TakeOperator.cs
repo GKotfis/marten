@@ -13,7 +13,7 @@ public class TakeOperator: LinqOperator
     public override MethodCallExpression Apply(ILinqQuery query, MethodCallExpression expression)
     {
         var usage = query.CollectionUsageFor(expression);
-        usage.WriteTake(expression.Arguments.Last().As<int>());
+        usage.WriteLimit(expression.Arguments.Last().As<ConstantExpression>().Value.As<int>());
 
         return expression;
     }

@@ -16,16 +16,37 @@ public class CollectionUsage
     public List<Ordering> Ordering { get; } = new();
     public List<Expression> Wheres { get; } = new();
 
-    public void WriteTake(int limit)
+
+    private int? _limit;
+    public void WriteLimit(int limit)
     {
-        throw new NotImplementedException();
+        _limit ??= limit; // don't overwrite
     }
 
-    public NewStatement BuildStatement(DocumentCollection document)
+    private int? _offset;
+    public void WriteOffset(int offset)
     {
-        throw new NotImplementedException();
+        _offset ??= offset; // don't overwrite
     }
 
-    public ISelectClause SelectClause { get; internal set; }
+
+
+
+    public NewStatement BuildStatement(DocumentCollection collection)
+    {
+        var statement = new NewSelectorStatement
+        {
+            SelectClause = collection.SelectClause,
+            Limit = _limit,
+            Offset = _offset
+        };
+
+        // TODO - Take, Skip, Ordering, Where
+
+
+        return statement;
+    }
+
+
 }
 

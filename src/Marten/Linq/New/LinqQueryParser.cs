@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core.Reflection;
 using Marten.Exceptions;
 using Marten.Internal;
 using Marten.Linq.QueryHandlers;
@@ -56,10 +57,9 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
             _collectionUsages.Push(usage);
         }
 
+        var (statement, selectClause) = buildOutStatement();
 
-        var statement = buildOutStatement();
-
-        return CurrentStatement.SelectClause.BuildHandler<IReadOnlyList<T>>(_session, TopStatement, CurrentStatement);
+        return selectClause.BuildHandler<IReadOnlyList<T>>(_session, statement.Top(), statement.Current());
     }
 
     public IQueryHandler<TResult> BuildHandler<TResult>()
@@ -96,7 +96,9 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
         var collection = new DocumentCollection(storage);
 
         var statement = top.BuildStatement(collection);
-        return (statement, top.SelectClause);
+        var selector = statement.Current().As<NewSelectorStatement>().SelectClause;
+
+        return (statement, selector);
     }
 
 

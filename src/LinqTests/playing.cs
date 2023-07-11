@@ -57,9 +57,9 @@ public class playing : IntegrationContext
         theSession.Logger = new TestOutputMartenLogger(_output);
 
         var targets = await theSession.Query<Target>()
-            .OrderBy(x => x.Double)
+            //.OrderBy(x => x.Double)
             //.Where(x => x.Number == 5)
-            //.Take(5)
+            .Take(5)
             .ToListAsync();
 
 

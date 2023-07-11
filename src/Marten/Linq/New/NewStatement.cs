@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using Marten.Linq.SqlGeneration;
 using Weasel.Postgresql;
 using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.New;
+
+
 
 public abstract class NewStatement: ISqlFragment
 {
@@ -24,10 +28,9 @@ public abstract class NewStatement: ISqlFragment
 
     public void Apply(CommandBuilder builder)
     {
-        foreach (var fragment in fragments())
-        {
-            fragment.Apply(builder);
-        }
+        apply(builder);
+
+        builder.Append(";");
 
         if (Next != null)
         {
@@ -36,7 +39,7 @@ public abstract class NewStatement: ISqlFragment
         }
     }
 
-    protected abstract IEnumerable<ISqlFragment> fragments();
+    protected abstract void apply(CommandBuilder builder);
 
     bool ISqlFragment.Contains(string sqlText)
     {
@@ -44,3 +47,81 @@ public abstract class NewStatement: ISqlFragment
         return false;
     }
 }
+
+public class NewSelectorStatement : NewStatement
+{
+    //public ISqlFragment FromClause { get; set; }
+
+    public int? Limit { get; set; }
+    public int? Offset { get; set; }
+
+    protected override void apply(CommandBuilder builder)
+    {
+        SelectClause.Apply(builder);
+
+        if (Wheres.Any())
+        {
+            builder.Append(" where ");
+            foreach (var where in Wheres)
+            {
+                where.Apply(builder);
+            }
+        }
+
+        if (Ordering.Expressions.Any())
+        {
+            builder.Append(" order by ");
+            builder.Append(Ordering.Expressions[0]);
+            for (int i = 1; i < Ordering.Expressions.Count; i++)
+            {
+                builder.Append(", ");
+                builder.Append(Ordering.Expressions[i]);
+            }
+        }
+
+        if (Offset.HasValue)
+        {
+            builder.Append(" OFFSET ");
+            builder.AppendParameter(Offset.Value);
+        }
+
+        if (Limit.HasValue)
+        {
+            builder.Append(" LIMIT ");
+            builder.AppendParameter(Limit.Value);
+        }
+    }
+
+
+    public List<ISqlFragment> Wheres { get; } = new();
+    public OrderByFragment Ordering { get; } = new();
+
+    // TODO -- this would conceivably overwritten depending on usage of
+    // Linq operators
+    public ISelectClause SelectClause { get; internal set; }
+}
+
+public class OrderByFragment: ISqlFragment
+{
+    public List<string> Expressions { get; } = new();
+
+    public void Apply(CommandBuilder builder)
+    {
+        builder.Append(" order by ");
+        builder.Append(Expressions[0]);
+        for (int i = 1; i < Expressions.Count; i++)
+        {
+            builder.Append(", ");
+            builder.Append(Expressions[i]);
+        }
+    }
+
+    public bool Contains(string sqlText)
+    {
+        return Expressions.Any(x => x.Contains(sqlText));
+    }
+}
+
+
+
+

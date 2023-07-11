@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Marten.Internal.Storage;
+using Marten.Linq.SqlGeneration;
 using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.New;
@@ -12,6 +13,7 @@ public class DocumentCollection: IQueryableCollection
     {
         ElementType = storage.DocumentType;
         From = new FromFragment(storage.TableName, "d");
+        SelectClause = storage;
     }
 
     public Type ElementType { get; }
@@ -21,4 +23,8 @@ public class DocumentCollection: IQueryableCollection
     {
         throw new NotImplementedException();
     }
+
+    public ISelectClause SelectClause { get; }
 }
+
+
