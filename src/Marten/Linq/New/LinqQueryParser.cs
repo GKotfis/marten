@@ -80,7 +80,9 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
     {
         if (_operators.TryFind(node.Method.Name, out var op))
         {
-            return op.Apply(this, node);
+            op.Apply(this, node);
+
+            return base.VisitMethodCall(node);
         }
 
         throw new BadLinqExpressionException($"Marten does not (yet) support Linq operator '{node.Method.Name}'");
@@ -93,7 +95,7 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
 
         // TODO -- this should be memoized!
         var storage = _session.StorageFor(top.ElementType);
-        var collection = new DocumentCollection(storage);
+        var collection = new DocumentCollection(storage, _session.Options);
 
         var statement = top.BuildStatement(collection);
         var selector = statement.Current().As<NewSelectorStatement>().SelectClause;

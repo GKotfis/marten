@@ -68,16 +68,7 @@ public class NewSelectorStatement : NewStatement
             }
         }
 
-        if (Ordering.Expressions.Any())
-        {
-            builder.Append(" order by ");
-            builder.Append(Ordering.Expressions[0]);
-            for (int i = 1; i < Ordering.Expressions.Count; i++)
-            {
-                builder.Append(", ");
-                builder.Append(Ordering.Expressions[i]);
-            }
-        }
+        Ordering.Apply(builder);
 
         if (Offset.HasValue)
         {
@@ -107,6 +98,8 @@ public class OrderByFragment: ISqlFragment
 
     public void Apply(CommandBuilder builder)
     {
+        if (!Expressions.Any()) return;
+
         builder.Append(" order by ");
         builder.Append(Expressions[0]);
         for (int i = 1; i < Expressions.Count; i++)

@@ -13,7 +13,7 @@ public class CollectionUsage
     }
 
     public Type ElementType { get; }
-    public List<Ordering> Ordering { get; } = new();
+    public List<NewOrdering> Ordering { get; } = new();
     public List<Expression> Wheres { get; } = new();
 
 
@@ -41,7 +41,12 @@ public class CollectionUsage
             Offset = _offset
         };
 
-        // TODO - Take, Skip, Ordering, Where
+        // TODO - Skip, Ordering, Where
+
+        foreach (var ordering in Ordering)
+        {
+            statement.Ordering.Expressions.Add(ordering.BuildExpression(collection));
+        }
 
 
         return statement;

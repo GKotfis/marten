@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using Marten.Linq.Parsing;
 using Remotion.Linq.Clauses;
 
 namespace Marten.Linq.New;
@@ -16,7 +17,7 @@ public class OrderByOperator: LinqOperator
     public override MethodCallExpression Apply(ILinqQuery query, MethodCallExpression expression)
     {
         var usage = query.CollectionUsageFor(expression);
-        usage.Ordering.Add(new Ordering(expression.Arguments.Last(), OrderingDirection.Asc));
+        usage.Ordering.Add(new NewOrdering(expression.Arguments.Last(), OrderingDirection.Asc));
         return null;
     }
 }
@@ -27,7 +28,7 @@ public enum CasingRule
     CaseInsensitive
 }
 
-public class Ordering
+public class NewOrdering
 {
     public Expression Expression { get; }
 
@@ -36,16 +37,20 @@ public class Ordering
 
     public CasingRule CasingRule { get; set; } = CasingRule.CaseInsensitive;
 
-    public Ordering(Expression expression, OrderingDirection direction)
+    public NewOrdering(Expression expression, OrderingDirection direction)
     {
         Expression = expression;
         Direction = direction;
     }
 
-    [Obsolete("Temporary")]
-    public (Remotion.Linq.Clauses.Ordering Ordering, bool CaseInsensitive) Convert()
+    public string BuildExpression(IQueryableCollection collection)
     {
-        return (new Remotion.Linq.Clauses.Ordering(Expression, Direction), CasingRule == CasingRule.CaseSensitive);
+        var members = FindMembers.Determine(Expression);
+        if (members.Length != 1) throw new NotImplementedException("Not ready for multi-level ordering quite yet");
+
+        var member = collection.FindMember(members[0]);
+
+        return member.BuildOrderingExpression(this);
     }
 }
 
