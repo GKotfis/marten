@@ -38,7 +38,7 @@ internal class UserSuppliedQueryHandler<T>: IQueryHandler<IReadOnlyList<T>>
     {
         if (!SqlContainsCustomSelect)
         {
-            _selectClause.WriteSelectClause(builder);
+            _selectClause.Apply(builder);
 
             if (_sql.StartsWith("where", StringComparison.OrdinalIgnoreCase) || _sql.StartsWith("order", StringComparison.OrdinalIgnoreCase))
             {

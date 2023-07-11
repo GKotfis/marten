@@ -52,12 +52,17 @@ public class AnySelectClause: ISelectClause, IQueryHandler<bool>
 
     public Type SelectedType => typeof(bool);
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append("select TRUE as result");
         sql.Append(" from ");
         sql.Append(FromObject);
         sql.Append(" as d");
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 
     public string[] SelectFields()

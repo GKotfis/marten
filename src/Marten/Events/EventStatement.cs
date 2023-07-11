@@ -39,7 +39,7 @@ internal class EventStatement: Statement
 
     protected override void configure(CommandBuilder builder)
     {
-        _storage.WriteSelectClause(builder);
+        _storage.Apply(builder);
 
         var wheres = filters().ToArray();
         switch (wheres.Length)

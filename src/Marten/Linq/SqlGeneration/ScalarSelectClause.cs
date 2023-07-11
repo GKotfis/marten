@@ -32,6 +32,11 @@ internal class ScalarSelectClause<T>: ISelectClause, ISelector<T>, IScalarSelect
         FieldName = field.TypedLocator;
     }
 
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
+    }
+
     public string FieldName { get; private set; }
 
     public ISelectClause CloneToOtherTable(string tableName)
@@ -53,7 +58,7 @@ internal class ScalarSelectClause<T>: ISelectClause, ISelector<T>, IScalarSelect
 
     public string FromObject { get; }
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append("select ");
         sql.Append(FieldName);

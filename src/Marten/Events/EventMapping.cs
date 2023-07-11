@@ -230,11 +230,16 @@ public class EventMapping<T>: EventMapping, IDocumentStorage<T> where T : class
 
     Type ISelectClause.SelectedType => typeof(T);
 
-    void ISelectClause.WriteSelectClause(CommandBuilder sql)
+    void ISqlFragment.Apply(CommandBuilder sql)
     {
         sql.Append("select data from ");
         sql.Append(_tableName);
         sql.Append(" as d");
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 
     ISelector ISelectClause.BuildSelector(IMartenSession session)

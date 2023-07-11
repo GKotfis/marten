@@ -29,6 +29,11 @@ internal class DataSelectClause<T>: ISelectClause, IScalarSelectClause
         return new DataSelectClause<T>(tableName, FieldName);
     }
 
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
+    }
+
     public void ApplyOperator(string op)
     {
         FieldName = $"{op}({FieldName})";
@@ -43,7 +48,7 @@ internal class DataSelectClause<T>: ISelectClause, IScalarSelectClause
 
     public string FromObject { get; }
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         if (FieldName.IsNotEmpty())
         {

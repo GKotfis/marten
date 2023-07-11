@@ -28,7 +28,7 @@ public abstract class SelectorStatement: Statement
     {
         startCommonTableExpression(sql);
 
-        SelectClause.WriteSelectClause(sql);
+        SelectClause.Apply(sql);
 
         writeWhereClause(sql);
 

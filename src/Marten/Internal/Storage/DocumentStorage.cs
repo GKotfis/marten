@@ -279,9 +279,14 @@ public abstract class DocumentStorage<T, TId>: IDocumentStorage<T, TId> where T 
     public abstract TId Identity(T document);
 
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append(_selectClause);
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 
     public string[] SelectFields()

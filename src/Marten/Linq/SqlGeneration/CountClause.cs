@@ -50,12 +50,17 @@ public class CountClause<T>: ISelectClause, IQueryHandler<T>
 
     public string FromObject { get; }
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append("select count(*) as number");
         sql.Append(" from ");
         sql.Append(FromObject);
         sql.Append(" as d");
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 
     public string[] SelectFields()

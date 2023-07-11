@@ -103,7 +103,7 @@ public abstract class EventDocumentStorage: IEventStorage
     public string FromObject { get; }
     public Type SelectedType => typeof(IEvent);
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append(_selectClause);
     }
@@ -278,5 +278,10 @@ public abstract class EventDocumentStorage: IEventStorage
         }
 
         return Events.EventMappingFor(type);
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 }

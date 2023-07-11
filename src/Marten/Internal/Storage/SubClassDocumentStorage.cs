@@ -65,9 +65,14 @@ internal class SubClassDocumentStorage<T, TRoot, TId>: IDocumentStorage<T, TId>
     public string FromObject { get; }
     public Type SelectedType => typeof(T);
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
-        _parent.WriteSelectClause(sql);
+        _parent.Apply(sql);
+    }
+
+    public bool Contains(string sqlText)
+    {
+        return false;
     }
 
     public string[] SelectFields()

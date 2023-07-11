@@ -57,7 +57,7 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
         }
 
 
-        buildOutStatement();
+        var statement = buildOutStatement();
 
         return CurrentStatement.SelectClause.BuildHandler<IReadOnlyList<T>>(_session, TopStatement, CurrentStatement);
     }
@@ -87,15 +87,16 @@ internal class LinqQueryParser: ExpressionVisitor, ILinqQuery
     }
 
 
-    private void buildOutStatement()
+    private (NewStatement, ISelectClause) buildOutStatement()
     {
         var top = _collectionUsages.Peek();
-        var statement = top.BuildStatement(_session);
 
-        TopStatement = statement.Top();
-        CurrentStatement = (SelectorStatement)statement.Current();
+        // TODO -- this should be memoized!
+        var storage = _session.StorageFor(top.ElementType);
+        var collection = new DocumentCollection(storage);
 
-        TopStatement.CompileStructure(_session);
+        var statement = top.BuildStatement(collection);
+        return (statement, top.SelectClause);
     }
 
 

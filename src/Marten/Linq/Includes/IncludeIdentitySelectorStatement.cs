@@ -57,7 +57,7 @@ public class IncludeIdentitySelectorStatement: Statement, ISelectClause
 
     public Type SelectedType => typeof(void);
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         if (IncludeDataInTempTable)
         {

@@ -19,13 +19,18 @@ internal class StatsSelectClause<T>: ISelectClause
         _statistics = statistics;
     }
 
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
+    }
+
     public ISelectClause Inner { get; }
 
     public Type SelectedType => Inner.SelectedType;
 
     public string FromObject => Inner.FromObject;
 
-    public void WriteSelectClause(CommandBuilder sql)
+    public void Apply(CommandBuilder sql)
     {
         sql.Append("select ");
         sql.Append(Inner.SelectFields().Join(", "));
