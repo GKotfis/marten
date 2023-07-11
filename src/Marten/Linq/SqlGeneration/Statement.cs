@@ -42,7 +42,7 @@ public class PagedStatement: IPagedStatement
 /// <summary>
 ///     Internal model used to generate SQL within Linq queries
 /// </summary>
-public abstract class Statement: IPagedStatement
+public abstract class Statement: IPagedStatement, ISqlFragment
 {
     private Statement _next;
 
@@ -112,6 +112,16 @@ public abstract class Statement: IPagedStatement
             sql.Append(" ");
             Next.Configure(sql);
         }
+    }
+
+    void ISqlFragment.Apply(CommandBuilder builder)
+    {
+        Configure(builder);
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
     }
 
     protected abstract void configure(CommandBuilder builder);

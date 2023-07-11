@@ -11,15 +11,16 @@ using Marten.Linq.SqlGeneration;
 using Marten.Services;
 using Npgsql;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.QueryHandlers;
 
 internal class ListQueryHandler<T>: IQueryHandler<IReadOnlyList<T>>, IQueryHandler<IEnumerable<T>>,
     IMaybeStatefulHandler
 {
-    private readonly Statement _statement;
+    private readonly ISqlFragment _statement;
 
-    public ListQueryHandler(Statement statement, ISelector<T> selector)
+    public ListQueryHandler(ISqlFragment statement, ISelector<T> selector)
     {
         _statement = statement;
         Selector = selector;
@@ -55,7 +56,7 @@ internal class ListQueryHandler<T>: IQueryHandler<IReadOnlyList<T>>, IQueryHandl
 
     public void ConfigureCommand(CommandBuilder builder, IMartenSession session)
     {
-        _statement.Configure(builder);
+        _statement.Apply(builder);
     }
 
     public IReadOnlyList<T> Handle(DbDataReader reader, IMartenSession session)
