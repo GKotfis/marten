@@ -22,6 +22,7 @@ using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.Expressions;
 using Remotion.Linq.Clauses.ResultOperators;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.Parsing;
 
@@ -294,7 +295,7 @@ internal partial class LinqHandlerBuilder
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IQueryHandler<TResult> BuildHandler<TDocument, TResult>(ISelector<TDocument> selector,
-        Statement statement)
+        ISqlFragment statement)
     {
         if (typeof(TResult).CanBeCastTo<IEnumerable<TDocument>>())
         {

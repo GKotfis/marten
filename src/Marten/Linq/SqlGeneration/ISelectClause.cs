@@ -4,6 +4,7 @@ using Marten.Internal;
 using Marten.Linq.QueryHandlers;
 using Marten.Linq.Selectors;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.SqlGeneration;
 
@@ -21,6 +22,6 @@ public interface ISelectClause
     string[] SelectFields();
 
     ISelector BuildSelector(IMartenSession session);
-    IQueryHandler<T> BuildHandler<T>(IMartenSession session, Statement topStatement, Statement currentStatement);
+    IQueryHandler<T> BuildHandler<T>(IMartenSession session, ISqlFragment topStatement, ISqlFragment currentStatement);
     ISelectClause UseStatistics(QueryStatistics statistics);
 }

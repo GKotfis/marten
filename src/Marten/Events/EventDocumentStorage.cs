@@ -118,8 +118,8 @@ public abstract class EventDocumentStorage: IEventStorage
         return this;
     }
 
-    public IQueryHandler<T> BuildHandler<T>(IMartenSession session, Statement topStatement,
-        Statement currentStatement)
+    public IQueryHandler<T> BuildHandler<T>(IMartenSession session, ISqlFragment topStatement,
+        ISqlFragment currentStatement)
     {
         return LinqHandlerBuilder.BuildHandler<IEvent, T>(this, topStatement);
     }

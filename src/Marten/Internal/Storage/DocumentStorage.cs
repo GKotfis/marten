@@ -291,8 +291,8 @@ public abstract class DocumentStorage<T, TId>: IDocumentStorage<T, TId> where T 
 
     public abstract ISelector BuildSelector(IMartenSession session);
 
-    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, Statement statement,
-        Statement currentStatement)
+    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, ISqlFragment statement,
+        ISqlFragment currentStatement)
     {
         var selector = (ISelector<T>)BuildSelector(session);
 

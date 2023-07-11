@@ -8,6 +8,7 @@ using Marten.Linq.Parsing;
 using Marten.Linq.QueryHandlers;
 using Marten.Linq.Selectors;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.SqlGeneration;
 
@@ -67,8 +68,8 @@ internal class ScalarStringSelectClause: ISelectClause, IScalarSelectClause, ISe
         return this;
     }
 
-    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, Statement statement,
-        Statement currentStatement)
+    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, ISqlFragment statement,
+        ISqlFragment currentStatement)
     {
         return LinqHandlerBuilder.BuildHandler<string, TResult>(this, statement);
     }

@@ -7,12 +7,13 @@ using Marten.Internal;
 using Marten.Linq.QueryHandlers;
 using Marten.Linq.Selectors;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.SqlGeneration;
 
 public class CountClause<T>: ISelectClause, IQueryHandler<T>
 {
-    private Statement _topStatement;
+    private ISqlFragment _topStatement;
 
     public CountClause(string from)
     {
@@ -21,7 +22,7 @@ public class CountClause<T>: ISelectClause, IQueryHandler<T>
 
     public void ConfigureCommand(CommandBuilder builder, IMartenSession session)
     {
-        _topStatement.Configure(builder);
+        _topStatement.Apply(builder);
     }
 
     public T Handle(DbDataReader reader, IMartenSession session)
@@ -67,8 +68,8 @@ public class CountClause<T>: ISelectClause, IQueryHandler<T>
         throw new NotSupportedException();
     }
 
-    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, Statement topStatement,
-        Statement currentStatement)
+    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, ISqlFragment topStatement,
+        ISqlFragment currentStatement)
     {
         _topStatement = topStatement;
         return (IQueryHandler<TResult>)this;

@@ -6,6 +6,7 @@ using Marten.Linq.QueryHandlers;
 using Marten.Linq.Selectors;
 using Marten.Linq.SqlGeneration;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 using StringExtensions = JasperFx.Core.StringExtensions;
 
 namespace Marten.Linq.Includes;
@@ -85,8 +86,8 @@ internal class IncludeIdentitySelectorStatement: Statement, ISelectClause
         throw new NotSupportedException();
     }
 
-    public IQueryHandler<T> BuildHandler<T>(IMartenSession session, Statement topStatement,
-        Statement currentStatement)
+    public IQueryHandler<T> BuildHandler<T>(IMartenSession session, ISqlFragment topStatement,
+        ISqlFragment currentStatement)
     {
         // It's wrapped in LinqHandlerBuilder
         return _clonedEnd.SelectClause.BuildHandler<T>(session, topStatement, currentStatement);

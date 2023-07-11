@@ -5,6 +5,7 @@ using Marten.Internal;
 using Marten.Linq.QueryHandlers;
 using Marten.Linq.Selectors;
 using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.SqlGeneration;
 
@@ -45,8 +46,8 @@ internal class StatsSelectClause<T>: ISelectClause
         return Inner.BuildSelector(session);
     }
 
-    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, Statement topStatement,
-        Statement currentStatement)
+    public IQueryHandler<TResult> BuildHandler<TResult>(IMartenSession session, ISqlFragment topStatement,
+        ISqlFragment currentStatement)
     {
         var selector = (ISelector<T>)Inner.BuildSelector(session);
 
