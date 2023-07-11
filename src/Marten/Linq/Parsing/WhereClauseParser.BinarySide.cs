@@ -19,7 +19,7 @@ internal partial class WhereClauseParser
         public IField Field { get; set; }
         public IComparableFragment Comparable { get; set; }
 
-        public Expression MemberExpression { get; }
+        public Expression MemberExpression { get; }s
 
         public ISqlFragment CompareTo(BinarySide right, string op)
         {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using Marten.Linq.SqlGeneration;
 using Weasel.Postgresql;
 using Weasel.Postgresql.SqlGeneration;
@@ -46,9 +45,10 @@ public abstract class NewStatement: ISqlFragment
         // TODO -- revisit this later for multi-tenancy searching
         return false;
     }
+
 }
 
-public class NewSelectorStatement : NewStatement
+public class NewSelectorStatement : NewStatement, IWhereFragmentHolder
 {
     //public ISqlFragment FromClause { get; set; }
 
@@ -85,6 +85,13 @@ public class NewSelectorStatement : NewStatement
 
 
     public List<ISqlFragment> Wheres { get; } = new();
+
+    public void Register(ISqlFragment fragment)
+    {
+        Wheres.Add(fragment);
+    }
+
+
     public OrderByFragment Ordering { get; } = new();
 
     // TODO -- this would conceivably overwritten depending on usage of

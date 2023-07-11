@@ -39,12 +39,21 @@ public class CollectionUsage
             Offset = _offset
         };
 
-        // TODO - Skip, Ordering, Where
+        // TODO - Where
 
         foreach (var ordering in Ordering)
         {
             statement.Ordering.Expressions.Add(ordering.BuildExpression(collection));
         }
+
+        // TODO -- watch for "ANDS"
+        var parser = new WhereClauseParser(collection, statement);
+        foreach (var expression in Wheres)
+        {
+            parser.Visit(expression);
+        }
+
+        // TODO -- have the document storage wrap or using default where fragments
 
 
         return statement;
