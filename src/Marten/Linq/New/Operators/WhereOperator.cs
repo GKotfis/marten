@@ -34,7 +34,11 @@ public class WhereOperator: LinqOperator
     public override MethodCallExpression Apply(ILinqQuery query, MethodCallExpression expression)
     {
         var usage = query.CollectionUsageFor(expression);
-        usage.Wheres.Add(expression.Arguments.Last());
+        var where = expression.Arguments.Last();
+        if (where is UnaryExpression e) where = e.Operand;
+        if (where is LambdaExpression l) where = l.Body;
+
+        usage.Wheres.Add(where);
 
         var elementType = usage.ElementType;
         return Expression.Call(expression.Method, expression.Arguments[0], Expression.Constant(_always[elementType]));

@@ -58,7 +58,7 @@ public class playing : IntegrationContext
 
         var targets = await theSession.Query<Target>()
             .OrderBy(x => x.Double)
-            .Where(x => x.Number == 5)
+            .Where(x => x.Number == 6)
             .Take(5)
             .ToListAsync();
 

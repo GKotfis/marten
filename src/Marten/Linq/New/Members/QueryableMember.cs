@@ -4,6 +4,8 @@ using JasperFx.Core.Reflection;
 using Marten.Linq.New.Operators;
 using Marten.Util;
 using Remotion.Linq.Clauses;
+using Weasel.Postgresql;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.New.Members;
 
@@ -40,4 +42,13 @@ public abstract class QueryableMember: IQueryableMember
     }
 
 
+    void ISqlFragment.Apply(CommandBuilder builder)
+    {
+        builder.Append(TypedLocator);
+    }
+
+    bool ISqlFragment.Contains(string sqlText)
+    {
+        return false;
+    }
 }

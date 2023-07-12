@@ -1,10 +1,13 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using Marten.Linq.New.Operators;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace Marten.Linq.New.Members;
 
-public interface IQueryableMember
+
+public interface IQueryableMember : ISqlFragment
 {
     MemberInfo Member { get; }
     Type MemberType { get; }
@@ -25,4 +28,9 @@ public interface IQueryableMember
     /// <param name="ordering"></param>
     /// <returns></returns>
     string BuildOrderingExpression(NewOrdering ordering);
+}
+
+public interface IComparableMember
+{
+    ISqlFragment CreateComparison(string op, ConstantExpression constant);
 }

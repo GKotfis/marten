@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
@@ -35,6 +37,18 @@ public class DocumentCollection: IQueryableCollection
         _members = _members.AddOrUpdate(member.Name, m);
 
         return m;
+    }
+
+    public IQueryableMember MemberFor(Expression expression)
+    {
+        // TODO -- NEEDS TO GET MORE COMPLICATED LATER
+
+        var members = FindMembers.Determine(expression);
+
+        if (members.Length != 1)
+            throw new NotImplementedException("Hey, deep accessors aren't yet supported in the new Linq provider");
+
+        return FindMember(members.Single());
     }
 
     private IQueryableMember createQuerableMember(MemberInfo member)

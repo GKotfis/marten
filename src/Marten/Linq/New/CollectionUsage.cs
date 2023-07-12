@@ -47,7 +47,7 @@ public class CollectionUsage
         }
 
         // TODO -- watch for "ANDS"
-        var parser = new WhereClauseParser(collection, statement);
+        var parser = new NewWhereClauseParser(collection, statement);
         foreach (var expression in Wheres)
         {
             parser.Visit(expression);
